@@ -1,31 +1,32 @@
 /*
- ---
+---
 
- description: Eye following the mouse by moving inside a circular eye socket.
-              We assume the eye is initially positioned at the center of the circle.
-              Its position must be absolute or relative (we're using top and left)
+description: |
+             Eye following the mouse by moving inside a circular eye socket.
+             We assume the eye is initially positioned at the center of the circle.
+             Its position must be absolute or relative (we're using top and left)
 
- authors:
- - Goutte <antoine@goutenoir.com>
+authors:
+- Goutte <antoine@goutenoir.com>
 
- demo:
- - http://jsfiddle.net/goutte/B2Nza
+demo:
+- http://jsfiddle.net/goutte/B2Nza
 
- licence:
- - GPL
+licence:
+- GPL
 
- requires:
- - core/1.4.5:Class
- - core/1.4.5:Element
- - core/1.4.5:Array
- - core/1.4.5:Options
- - core/1.4.5:Events
+requires:
+- core/1.4.5:Class
+- core/1.4.5:Element
+- core/1.4.5:Array
+- core/1.4.5:Options
+- core/1.4.5:Events
 
- provides:
- - Eye
+provides:
+- Eye
 
- ...
- */
+...
+*/
 var Eye = new Class ({
 
   Implements: [Options],
