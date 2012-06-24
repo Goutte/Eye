@@ -66,6 +66,13 @@ var Eye = new Class ({
     }
   },
 
+  /**
+   * Makes the element move in the direction of the coords specified, but restraining itself in a circle
+   * of radius options.socketRadius
+   *
+   * @param x
+   * @param y
+   */
   lookTo: function (x, y) {
     var eyeX = this.coordinates.left + this.coordinates.width / 2;
     var eyeY = this.coordinates.top + this.coordinates.height / 2;

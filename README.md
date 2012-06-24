@@ -76,4 +76,3 @@ Demo
 
 http://jsfiddle.net/goutte/B2Nza
 
-
