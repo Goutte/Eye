@@ -18,16 +18,55 @@ HTML
 
 ``` html
 <div id="face">
-  <div id="left_eye"  class="eye"></div>
-  <div id="right_eye" class="eye"></div>
+  <div id="left_eye"  class="left_eye"></div>
+  <div id="right_eye" class="right_eye"></div>
 </div>
+```
+
+
+CSS
+
+``` css
+.face {
+    position: relative;
+    margin: 30px auto;
+    width:  49px;
+    height: 41px;
+    background: url(https://github.com/Goutte/Eye/raw/master/Demo/assets/img/head.png) no-repeat;
+}
+
+.left_eye {
+    position: absolute;
+    left: 11px;
+    top:  13px;
+    width:  3px;
+    height: 3px;
+    background: url(https://github.com/Goutte/Eye/raw/master/Demo/assets/img/leftPupil.png) no-repeat;
+}
+
+.right_eye {
+    position: absolute;
+    left: 36px;
+    top:  13px;
+    width:  3px;
+    height: 4px;
+    background: url(https://github.com/Goutte/Eye/raw/master/Demo/assets/img/rightPupil.png) no-repeat;
+}
 ```
 
 
 JAVASCRIPT
 
 ``` javascript
-// todo
+var options = {
+  socketRadius: 4, // radius of the circle in which the eye's pupil can move
+  stickToSocket: false, // constraint the eye to the perimeter of the circle
+  bindMouseMove: true,
+  bindTouchMove: false,
+}
+
+var leftEye  = new Eye ('left_eye', options);
+var rightEye  = new Eye ('right_eye', options);
 ```
 
 

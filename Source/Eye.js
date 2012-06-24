@@ -15,7 +15,11 @@
  - GPL
 
  requires:
- - Mootools
+ - core/1.4.5:Class
+ - core/1.4.5:Element
+ - core/1.4.5:Array
+ - core/1.4.5:Options
+ - core/1.4.5:Events
 
  provides:
  - Eye
