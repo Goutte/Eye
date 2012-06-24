@@ -9,7 +9,7 @@
  - Goutte <antoine@goutenoir.com>
 
  demo:
- - todo
+ - http://jsfiddle.net/goutte/B2Nza
 
  licence:
  - GPL
