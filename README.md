@@ -20,7 +20,7 @@ HTML
 <div id="face">
   <div id="left_eye"  class="eye"></div>
   <div id="right_eye" class="eye"></div>
-</span>
+</div>
 ```
 
 
