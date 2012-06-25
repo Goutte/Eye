@@ -111,8 +111,15 @@ var Eye = new Class ({
    * @param y
    */
   lookOpposite: function (x, y) {
-    var viewSize = this.options.eventListenerElement.getSize();
-    this.lookAt(viewSize.x-x, viewSize.y-y);
+//    var viewSize = this.options.eventListenerElement.getSize();
+//    this.lookAt(viewSize.x-x, viewSize.y-y);
+    var eyeX = this.coordinates.left + this.coordinates.width / 2;
+    var eyeY = this.coordinates.top + this.coordinates.height / 2;
+
+    var newPos = this.normalize(eyeX - x, eyeY - y, this.options.socketRadius);
+    newPos.x = newPos.x + this.elementLeft;
+    newPos.y = newPos.y + this.elementTop;
+    this.element.setPosition(newPos);
   },
 
   normalize: function (x, y, factor) {
