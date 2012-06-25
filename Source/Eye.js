@@ -34,12 +34,14 @@ var Eye = new Class ({
   options: {
     socketRadius: 5, // radius of the circle in which the eye can move
     stickToSocket: true, // constraint the eye to the perimeter of the circle
+    behavior:     'follow',
     bindMouseMove: true,
     bindTouchMove: false,
     eventListenerElement: window
   },
 
   initialize: function (element, options) {
+    if (options.eventListenerElement) options.eventListenerElement = document.id(options.eventListenerElement);
     this.setOptions(options);
     this.element = document.id(element);
     if (-1 == ['relative','absolute'].indexOf(this.element.getStyle('position')))
@@ -53,15 +55,15 @@ var Eye = new Class ({
 
   bindEyeMoveEvents: function () {
     if (this.options.bindMouseMove) {
-      document.id(this.options.eventListenerElement).addEvent('mousemove', function(event){
-        this.lookTo(event.page.x, event.page.y);
+      this.options.eventListenerElement.addEvent('mousemove', function(event){
+        this.reactToEventPosition(event.page.x, event.page.y);
       }.bind(this));
     }
     if (this.options.bindTouchMove) {
-      document.id(this.options.eventListenerElement).addEvent('touchmove', function(event){
+      this.options.eventListenerElement.addEvent('touchmove', function(event){
         event.preventDefault();
         var touch = event.touches[0];
-        this.lookTo(touch.pageX, touch.pageY);
+        this.reactToEventPosition(touch.pageX, touch.pageY);
       }.bind(this));
     }
   },
@@ -73,7 +75,25 @@ var Eye = new Class ({
    * @param x
    * @param y
    */
-  lookTo: function (x, y) {
+  reactToEventPosition: function (x, y) {
+    switch (this.options.behavior) {
+      case 'flee':
+        this.lookOpposite(x, y);
+        break;
+      case 'follow':
+        this.lookAt(x, y);
+        break;
+    }
+  },
+
+  /**
+   * Makes the element move in the direction of the coords specified, but restraining itself in a circle
+   * of radius options.socketRadius
+   *
+   * @param x
+   * @param y
+   */
+  lookAt: function (x, y) {
     var eyeX = this.coordinates.left + this.coordinates.width / 2;
     var eyeY = this.coordinates.top + this.coordinates.height / 2;
 
@@ -81,6 +101,18 @@ var Eye = new Class ({
     newPos.x = newPos.x + this.elementLeft;
     newPos.y = newPos.y + this.elementTop;
     this.element.setPosition(newPos);
+  },
+
+  /**
+   * Makes the element move in the opposite direction of the coords specified, but restraining itself in a circle
+   * of radius options.socketRadius
+   *
+   * @param x
+   * @param y
+   */
+  lookOpposite: function (x, y) {
+    var viewSize = this.options.eventListenerElement.getSize();
+    this.lookAt(viewSize.x-x, viewSize.y-y);
   },
 
   normalize: function (x, y, factor) {
