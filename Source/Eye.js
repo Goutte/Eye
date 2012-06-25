@@ -81,8 +81,8 @@ var Eye = new Class ({
         this.lookOpposite(x, y);
         break;
       case 'follow':
+      default:
         this.lookAt(x, y);
-        break;
     }
   },
 
