@@ -93,11 +93,12 @@ var Eye = new Class ({
    * @param x
    * @param y
    */
-  lookAt: function (x, y) {
+  lookAt: function (x, y, factor) {
+    if (typeof factor == 'undefined' || null == factor) factor = 1;
     var eyeX = this.coordinates.left + this.coordinates.width / 2;
     var eyeY = this.coordinates.top + this.coordinates.height / 2;
 
-    var newPos = this.normalize(x - eyeX, y - eyeY, this.options.socketRadius);
+    var newPos = this.normalize(x - eyeX, y - eyeY, this.options.socketRadius * factor);
     newPos.x = newPos.x + this.elementLeft;
     newPos.y = newPos.y + this.elementTop;
     this.element.setPosition(newPos);
@@ -111,22 +112,14 @@ var Eye = new Class ({
    * @param y
    */
   lookOpposite: function (x, y) {
-//    var viewSize = this.options.eventListenerElement.getSize();
-//    this.lookAt(viewSize.x-x, viewSize.y-y);
-    var eyeX = this.coordinates.left + this.coordinates.width / 2;
-    var eyeY = this.coordinates.top + this.coordinates.height / 2;
-
-    var newPos = this.normalize(eyeX - x, eyeY - y, this.options.socketRadius);
-    newPos.x = newPos.x + this.elementLeft;
-    newPos.y = newPos.y + this.elementTop;
-    this.element.setPosition(newPos);
+    this.lookAt(x, y, -1);
   },
 
   normalize: function (x, y, factor) {
     if (typeof factor == 'undefined' || null == factor) factor = 1;
     var r = {x:x, y:y};
     var norm = Math.sqrt(x*x + y*y);
-    if (norm != 0 && (this.options.stickToSocket || norm > factor)) {
+    if (norm != 0 && (this.options.stickToSocket || norm > Math.abs(factor))) {
       r.x = x * factor / norm;
       r.y = y * factor / norm;
     }
