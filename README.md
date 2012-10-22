@@ -9,6 +9,12 @@ The eye is following the mouse by moving inside a circular eye socket.
 We assume the eye is initially positioned at the center of the circle.
 Its position must be absolute or relative. (we're using top and left)
 
+Image assets are shamelessly ripped off the [Binding of Isaac](http://fr.wikipedia.org/wiki/The_Binding_of_Isaac)
+
+Demo
+----
+
+http://jsfiddle.net/goutte/B2Nza
 
 
 How to use
@@ -71,8 +77,5 @@ var rightEye  = new Eye ('right_eye', options);
 
 
 
-Demo
-----
 
-http://jsfiddle.net/goutte/B2Nza
 
