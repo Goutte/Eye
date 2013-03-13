@@ -5,6 +5,7 @@ description: |
              Eye following the mouse by moving inside a circular eye socket.
              We assume the eye is initially positioned at the center of the circle.
              Its position must be absolute or relative (we're using top and left)
+             Specifically, this class provides the behavior of a Pupil.
 
 authors:
 - Goutte <antoine@goutenoir.com>
@@ -13,7 +14,7 @@ demo:
 - http://jsfiddle.net/goutte/B2Nza
 
 licence:
-- GPL
+- mathematics
 
 requires:
 - core/1.4.5:Class
@@ -34,9 +35,10 @@ var Eye = new Class ({
   options: {
     socketRadius: 5, // radius of the circle in which the eye can move
     stickToSocket: true, // constraint the eye to the perimeter of the circle
-    behavior:     'follow',
+    behavior:     'follow', // or 'flee', constrained to the eye socket
+    bindResize:    true, // re-setups the spatial context of the eye on resize
     bindMouseMove: true,
-    bindTouchMove: false,
+    bindTouchMove: false, // should this be true by default ?
     eventListenerElement: window
   },
 
@@ -44,13 +46,20 @@ var Eye = new Class ({
     if (options.eventListenerElement) options.eventListenerElement = document.id(options.eventListenerElement);
     this.setOptions(options);
     this.element = document.id(element);
+
     if (-1 == ['relative','absolute'].indexOf(this.element.getStyle('position')))
       throw new Error("Eye must be positioned as absolute or relative.");
+
+    this.setupSpatialContext();
+
+    this.bindEyeMoveEvents();
+    this.bindResizeEvent();
+  },
+
+  setupSpatialContext: function () {
     this.coordinates = this.element.getCoordinates();
     this.elementTop  = this.element.getStyle('top').toInt();
     this.elementLeft = this.element.getStyle('left').toInt();
-
-    this.bindEyeMoveEvents();
   },
 
   bindEyeMoveEvents: function () {
@@ -68,9 +77,17 @@ var Eye = new Class ({
     }
   },
 
+  bindResizeEvent: function () {
+    if (this.options.bindResize) {
+      this.options.eventListenerElement.addEvent('resize', function(event){
+        this.setupSpatialContext();
+      }.bind(this));
+    }
+  },
+
   /**
-   * Makes the element move in the direction of the coords specified, but restraining itself in a circle
-   * of radius options.socketRadius
+   * Makes the element react to the coords specified according to configuration
+   * while restraining itself in a circle of radius `options.socketRadius`
    *
    * @param x
    * @param y
@@ -78,7 +95,7 @@ var Eye = new Class ({
   reactToEventPosition: function (x, y) {
     switch (this.options.behavior) {
       case 'flee':
-        this.lookOpposite(x, y);
+        this.lookAway(x, y);
         break;
       case 'follow':
       default:
@@ -87,11 +104,12 @@ var Eye = new Class ({
   },
 
   /**
-   * Makes the element move in the direction of the coords specified, but restraining itself in a circle
-   * of radius options.socketRadius
+   * Makes the element move in the direction of the coords specified
+   * while restraining itself in a circle of radius `options.socketRadius`
    *
    * @param x
    * @param y
+   * @param factor
    */
   lookAt: function (x, y, factor) {
     if (typeof factor == 'undefined' || null == factor) factor = 1;
@@ -105,13 +123,13 @@ var Eye = new Class ({
   },
 
   /**
-   * Makes the element move in the opposite direction of the coords specified, but restraining itself in a circle
-   * of radius options.socketRadius
+   * Makes the element move in the *opposite* direction of the coords specified
+   * while restraining itself in a circle of radius `options.socketRadius`
    *
    * @param x
    * @param y
    */
-  lookOpposite: function (x, y) {
+  lookAway: function (x, y) {
     this.lookAt(x, y, -1);
   },
 
