@@ -50,6 +50,9 @@ var Eye = new Class ({
     if (-1 == ['relative','absolute'].indexOf(this.element.getStyle('position')))
       throw new Error("Eye must be positioned as absolute or relative.");
 
+    this.initialElementTop  = this.element.getStyle('top').toInt();
+    this.initialElementLeft = this.element.getStyle('left').toInt();
+
     this.setupSpatialContext();
 
     this.bindEyeMoveEvents();
@@ -58,8 +61,6 @@ var Eye = new Class ({
 
   setupSpatialContext: function () {
     this.coordinates = this.element.getCoordinates();
-    this.elementTop  = this.element.getStyle('top').toInt();
-    this.elementLeft = this.element.getStyle('left').toInt();
   },
 
   bindEyeMoveEvents: function () {
@@ -99,7 +100,7 @@ var Eye = new Class ({
         break;
       case 'follow':
       default:
-        this.lookAt(x, y);
+        this.lookAt(x, y, 1);
     }
   },
 
@@ -117,8 +118,8 @@ var Eye = new Class ({
     var eyeY = this.coordinates.top + this.coordinates.height / 2;
 
     var newPos = this.normalize(x - eyeX, y - eyeY, this.options.socketRadius * factor);
-    newPos.x = newPos.x + this.elementLeft;
-    newPos.y = newPos.y + this.elementTop;
+    newPos.x = newPos.x + this.initialElementLeft;
+    newPos.y = newPos.y + this.initialElementTop;
     this.element.setPosition(newPos);
   },
 
